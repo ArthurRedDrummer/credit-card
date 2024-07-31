@@ -36,7 +36,7 @@ const expires = reactive({
     year: ''
   },
   name: 'card-expires',
-  title: 'Срок действия карты (месяц / год)',
+  title: 'Срок действия карты',
   error: ''
 });
 

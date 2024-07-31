@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col gap-2 w-full">
-    <div class="flex flex-row gap-5 justify-between items-center relative">
+    <div class="flex flex-row gap-5 justify-between items-center relative mobile:flex-col mobile:items-stretch">
       <label class="text-sm text-gray-500 whitespace-nowrap cursor-pointer" :for="name" v-text="title" />
       <input class="outline-none basis-full border-b border-b-gray-200 font-mono" autocomplete="off" type="text" :id="name"
         v-model="user" @input="validate" />
