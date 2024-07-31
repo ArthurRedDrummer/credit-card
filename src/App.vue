@@ -1,11 +1,12 @@
 <template>
   <form autocomplete="off">
-    <component v-for="field, name in card" :is="mapper[name]" :field="field" :key="name"/>
+    <component v-for="field, name in card" :is="mapper[name]" :field="field" :key="name" @change="update"/>
+    <input :disabled="!canSend" type="submit">
   </form>
 </template>
 
 <script setup>
-import { reactive } from 'vue'
+import { reactive, computed } from 'vue'
 
 import CardCvvField from './components/CardCvvField.vue'
 import CardExpiresField from './components/CardExpiresField.vue'
@@ -23,22 +24,38 @@ const card = reactive({
   name: {
     title: 'Name & Surname',
     name: 'card-holder',
-    value: ''
+    value: '',
+    hasError: true
   },
   number: {
     title: 'Card number',
     name: 'card-number',
-    value: ''
+    value: '',
+    hasError: true
   },
   date: {
     title: 'Date',
     name: 'card-date',
-    value: ''
+    value: '',
+    hasError: true
   },
-  // cvv: {
-  //   title: 'CVC/CVV',
-  //   name: 'card-cvv',
-  //   value: ''
-  // },
+  cvv: {
+    title: 'CVC/CVV',
+    name: 'card-cvv',
+    value: '',
+    hasError: true
+  },
 });
+
+const canSend = computed(() => {
+  return !Object.values(card).some(({hasError}) => hasError);
+});
+
+function update({name, error}) {
+  for (let field in card) {
+    if (card[field].name === name) {
+      card[field].hasError = !!error;
+    }
+  }
+}
 </script>

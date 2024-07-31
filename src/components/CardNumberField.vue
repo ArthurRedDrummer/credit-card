@@ -11,6 +11,8 @@
 <script setup>
 import { ref, computed } from 'vue'
 
+const emit = defineEmits(['change']);
+
 const props = defineProps({
   field: Object
 });
@@ -35,23 +37,24 @@ const value = computed(() => {
 function validate() {
   let value = props.field?.value;
 
+  error.value = '';
+
   if (!value) {
     error.value = 'Field is required';
-    return false;
   }
 
   if (value.toString().length > 18) {
     error.value = 'Invalid card number';
-    return false;
   }
 
   if (value.toString().length > 15 && !checkCardNumber(value)) {
     error.value = 'Invalid card number';
-    return false;
   }
 
-  error.value = '';
-  return true;
+  emit('change', {
+    name: props.field.name,
+    error: error.value
+  });
 }
 
 function checkCardNumber(input) {

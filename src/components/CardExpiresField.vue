@@ -14,21 +14,26 @@ const props = defineProps({
   field: Object
 });
 
+const emit = defineEmits(['change']);
+
 const error = ref('');
 
 const value = computed(() => {
   let [year, month] = props.field.value?.split('-') ?? [];
 
-  return `${month}/${year.slice(2)}`;
+  return year && month ? `${month}/${year?.slice(2)}` : '';
 });
 
 function validate() {
+  error.value = '';
+
   if (!props.field.value) {
     error.value = 'Field is required';
-    return false;
   }
 
-  error.value = ''
-  return true;
+  emit('change', {
+    name: props.field.name,
+    error: error.value
+  });
 }
 </script>

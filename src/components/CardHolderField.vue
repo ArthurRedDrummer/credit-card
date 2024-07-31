@@ -10,6 +10,8 @@
 <script setup>
 import { ref, computed } from 'vue'
 
+const emit = defineEmits(['change']);
+
 const props = defineProps({
   field: Object
 });
@@ -22,18 +24,20 @@ const value = computed(() => {
 
 function validate() {
   let value = props.field?.value;
-  
+
+  error.value = '';
+
   if (!value) {
     error.value = 'Field is required';
-    return false;
   }
 
   if (/[^a-zA-Z\s]+/.test(props.field.value)) {
     error.value = 'Field should contain only english letters and spaces';
-    return false;
   }
-  
-  error.value = '';
-  return true;
+
+  emit('change', {
+    name: props.field.name,
+    error: error.value
+  });
 }
 </script>
