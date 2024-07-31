@@ -25,11 +25,11 @@ const card = reactive({
     name: 'card-holder',
     value: ''
   },
-  // number: {
-  //   title: 'Card number',
-  //   name: 'card-number',
-  //   value: ''
-  // },
+  number: {
+    title: 'Card number',
+    name: 'card-number',
+    value: ''
+  },
   // date: {
   //   title: 'Date',
   //   name: 'card-date',
