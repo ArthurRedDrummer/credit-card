@@ -2,17 +2,9 @@
   <form autocomplete="off">
     <component v-for="field, name in card" :is="mapper[name]" :field="field" :key="name"/>
   </form>
-
-  <div>
-    <ul>
-      <li v-for="field, name in card" :key="name">
-        {{ field.value }}
-      </li>
-    </ul>
-  </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { reactive } from 'vue'
 
 import CardCvvField from './components/CardCvvField.vue'
@@ -33,20 +25,20 @@ const card = reactive({
     name: 'card-holder',
     value: ''
   },
-  number: {
-    title: 'Card number',
-    name: 'card-number',
-    value: ''
-  },
-  date: {
-    title: 'Date',
-    name: 'card-date',
-    value: ''
-  },
-  cvv: {
-    title: 'CVC/CVV',
-    name: 'card-cvv',
-    value: ''
-  },
+  // number: {
+  //   title: 'Card number',
+  //   name: 'card-number',
+  //   value: ''
+  // },
+  // date: {
+  //   title: 'Date',
+  //   name: 'card-date',
+  //   value: ''
+  // },
+  // cvv: {
+  //   title: 'CVC/CVV',
+  //   name: 'card-cvv',
+  //   value: ''
+  // },
 });
 </script>
