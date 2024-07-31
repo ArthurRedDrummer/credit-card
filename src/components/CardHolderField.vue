@@ -1,9 +1,14 @@
 <template>
-  <div>
-    <label :for="field.name" v-text="field.title" />
-    <input autocomplete="off" :id="field.name" type="text" v-model="field.value" @keyup="validate" />
-    <span v-text="value" />
-    <span v-if="error" v-text="error" />
+  <div class="flex flex-col gap-2 w-full">
+    <div class="flex flex-row gap-5 justify-between items-center relative">
+      <label class="text-sm text-gray-500 whitespace-nowrap" :for="field.name" v-text="field.title" />
+      <!-- <span class="basis-full border-b border-b-gray-200" v-text="value" /> -->
+      <input class="outline-none basis-full border-b border-b-gray-200" autocomplete="off" :id="field.name" type="text"
+        v-model="field.value" @keyup="validate" />
+    </div>
+    <div>
+      <span class="text-xs text-red-600" v-if="error" v-text="error" />
+    </div>
   </div>
 </template>
 
@@ -19,7 +24,7 @@ const props = defineProps({
 const error = ref('');
 
 const value = computed(() => {
-  return props.field.value?.toUpperCase() ?? '';
+  return props.field.value?.toUpperCase() ?? ' ';
 });
 
 function validate() {

@@ -1,7 +1,7 @@
 <template>
-  <form autocomplete="off">
+  <form class="flex flex-col gap-5 p-7 rounded-xl shadow-xl" autocomplete="off">
     <component v-for="field, name in card" :is="mapper[name]" :field="field" :key="name" @change="update"/>
-    <input :disabled="!canSend" type="submit">
+    <input class="block px-5 py-2 rounded-md" :class="canSend ? 'bg-red-800 text-white' : 'bg-gray-500 text-white'" :disabled="!canSend" type="submit">
   </form>
 </template>
 
