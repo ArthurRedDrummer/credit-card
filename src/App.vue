@@ -1,6 +1,7 @@
 <template>
   <form class="flex flex-col gap-5 p-7 rounded-xl shadow-xl" autocomplete="off">
-    <component v-for="field, name in card" :is="mapper[name]" :field="field" :key="name" @change="update"/>
+    <card-holder-field v-model:user="holder.value" v-model:error="holder.error" :name="holder.name" :title="holder.title"/>
+    <!-- <card-number-field v-model:number="number.value" v-model:error="number.error" :name="number.name" :title="number.title"/> -->
     <input class="block px-5 py-2 rounded-md" :class="canSend ? 'bg-red-800 text-white' : 'bg-gray-500 text-white'" :disabled="!canSend" type="submit">
   </form>
 </template>
@@ -13,49 +14,30 @@ import CardExpiresField from './components/CardExpiresField.vue'
 import CardHolderField from './components/CardHolderField.vue'
 import CardNumberField from './components/CardNumberField.vue'
 
-const mapper = {
-  cvv: CardCvvField,
-  date: CardExpiresField,
-  name: CardHolderField,
-  number: CardNumberField,
-}
+const holder = reactive({
+  value: '',
+  name: 'card-holder',
+  title: 'Имя владельца карты',
+  error: ''
+});
 
-const card = reactive({
-  name: {
-    title: 'Name & Surname',
-    name: 'card-holder',
-    value: '',
-    hasError: true
-  },
-  number: {
-    title: 'Card number',
-    name: 'card-number',
-    value: '',
-    hasError: true
-  },
-  date: {
-    title: 'Date',
-    name: 'card-date',
-    value: '',
-    hasError: true
-  },
-  cvv: {
-    title: 'CVC/CVV',
-    name: 'card-cvv',
-    value: '',
-    hasError: true
-  },
+const number = reactive({
+  value: '',
+  name: 'card-number',
+  title: 'Номер карты',
+  error: ''
 });
 
 const canSend = computed(() => {
-  return !Object.values(card).some(({hasError}) => hasError);
-});
-
-function update({name, error}) {
-  for (let field in card) {
-    if (card[field].name === name) {
-      card[field].hasError = !!error;
-    }
+  if (holder.error || !holder.value) {
+    return false;
   }
-}
+
+  // if (number.error || !number.value) {
+  //   return false;
+  // }
+
+  return true;
+})
+
 </script>

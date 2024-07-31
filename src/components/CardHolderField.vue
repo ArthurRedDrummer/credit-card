@@ -1,48 +1,58 @@
 <template>
   <div class="flex flex-col gap-2 w-full">
     <div class="flex flex-row gap-5 justify-between items-center relative">
-      <label class="text-sm text-gray-500 whitespace-nowrap" :for="field.name" v-text="field.title" />
-      <!-- <span class="basis-full border-b border-b-gray-200" v-text="value" /> -->
-      <input class="outline-none basis-full border-b border-b-gray-200" autocomplete="off" :id="field.name" type="text"
-        v-model="field.value" @keyup="validate" />
+      <label class="text-sm text-gray-500 whitespace-nowrap" :for="name" v-text="title" />
+      <input class="outline-none basis-full border-b border-b-gray-200" autocomplete="off" type="text" :id="name"
+        v-model="user" @input="validate" />
     </div>
-    <div>
-      <span class="text-xs text-red-600" v-if="error" v-text="error" />
-    </div>
+    <div class="text-xs text-red-600" v-if="error" v-text="error" />
   </div>
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+const [user] = defineModel('user', {
+  set(value) {
+    return value.toUpperCase();
+  }
+});
 
-const emit = defineEmits(['change']);
+const [error] = defineModel('error')
 
 const props = defineProps({
-  field: Object
-});
-
-const error = ref('');
-
-const value = computed(() => {
-  return props.field.value?.toUpperCase() ?? ' ';
-});
+  name: {
+    type: String,
+    required: true
+  },
+  title: {
+    type: String,
+    required: true
+  }
+})
 
 function validate() {
-  let value = props.field?.value;
+  let value = user.value;
+  let array = value.split(' ');
 
   error.value = '';
 
-  if (!value) {
-    error.value = 'Field is required';
+  if (value.length > 20) {
+    error.value = 'Поле не может быть больше 20 символов';
   }
 
-  if (/[^a-zA-Z\s]+/.test(props.field.value)) {
-    error.value = 'Field should contain only english letters and spaces';
+  if (array.filter(str => str).length < 2) {
+    error.value = 'Поле должно содержать имя и фамилию';
   }
 
-  emit('change', {
-    name: props.field.name,
-    error: error.value
-  });
+  if (array.filter(str => str).length >= 3) {
+    error.value = 'Поле должно содержать только имя и фамилию';
+  }
+
+  if (/[^A-Z\s]+/.test(value)) {
+    error.value = 'Поле может содержать только латинские буквы';
+  }
+
+  if (!value || value.trim().length === 0) {
+    error.value = 'Поле не может быть пустым';
+  }
 }
 </script>
