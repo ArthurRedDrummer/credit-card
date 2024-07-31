@@ -2,6 +2,7 @@
   <form class="flex flex-col gap-5 p-7 rounded-xl shadow-xl" autocomplete="off">
     <card-holder-field v-model:user="holder.value" v-model:error="holder.error" :name="holder.name" :title="holder.title"/>
     <card-number-field v-model:number="number.value" v-model:error="number.error" :name="number.name" :title="number.title"/>
+    <card-expires-field v-model:date="expires.value" v-model:error="expires.error" :name="expires.name" :title="expires.title"/>
     <input class="block px-5 py-2 rounded-md cursor-pointer" :class="canSend ? 'bg-red-800 text-white' : 'bg-gray-500 text-white'" :disabled="!canSend" type="submit">
   </form>
 </template>
@@ -25,6 +26,16 @@ const number = reactive({
   value: '',
   name: 'card-number',
   title: 'Номер карты',
+  error: ''
+});
+
+const expires = reactive({
+  value: {
+    month: '',
+    year: ''
+  },
+  name: 'card-expires',
+  title: 'Срок действия карты (месяц / год)',
   error: ''
 });
 

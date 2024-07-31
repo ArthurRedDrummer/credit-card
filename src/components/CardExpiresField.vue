@@ -1,10 +1,14 @@
 <template>
   <div class="flex flex-col gap-2 w-full">
     <div class="flex flex-row gap-5 justify-between items-center relative">
-      <label class="text-sm text-gray-500 whitespace-nowrap" :for="field.name" v-text="field.title" />
-      <!-- <span class="basis-full border-b border-b-gray-200" v-text="value" /> -->
-      <input class="outline-none basis-full border-b border-b-gray-200" autocomplete="off" :id="field.name"
-        type="month" v-model="field.value" @change="validate" />
+      <label class="text-sm text-gray-500 whitespace-nowrap cursor-pointer" :for="name" v-text="title" />
+      <div class="flex flex-row font-mono gap-1">
+        <input ref="monthInput" class="w-7 border-b border-b-gray-200 outline-none text-center" type="number"
+          v-model="month" @input="update">
+        <span class="text-gray-200">/</span>
+        <input ref="yearInput" class="w-12 border-b border-b-gray-200 outline-none text-center" type="number"
+          v-model="year" @input="update">
+      </div>
     </div>
     <div>
       <span class="text-xs text-red-600" v-if="error" v-text="error" />
@@ -13,32 +17,58 @@
 </template>
 
 <script setup>
-import {ref, computed} from 'vue'
+import { ref, computed } from 'vue'
 
+const [date] = defineModel('number');
+const [error] = defineModel('error');
 const props = defineProps({
-  field: Object
+  name: {
+    type: String,
+    required: true
+  },
+  title: {
+    type: String,
+    required: true
+  }
 });
 
-const emit = defineEmits(['change']);
+const month = ref(null);
+const year = ref(null);
 
-const error = ref('');
+const monthInput = ref(null);
+const yearInput = ref(null);
 
-const value = computed(() => {
-  let [year, month] = props.field.value?.split('-') ?? [];
+function update() {
+  date.value = {
+    month: month.value,
+    year: year.value
+  }
 
-  return year && month ? `${month}/${year?.slice(2)}` : '';
-});
+  if (month.value && month.value <= 12 && month.value.toString().length === 2) {
+    monthInput.value.blur();
+    yearInput.value.focus();
+  }
+
+  validate();
+}
 
 function validate() {
   error.value = '';
 
-  if (!props.field.value) {
-    error.value = 'Field is required';
+  if (!month.value) {
+    error.value = 'Поле месяц не может быть пустым'
   }
 
-  emit('change', {
-    name: props.field.name,
-    error: error.value
-  });
+  if (!year.value) {
+    error.value = 'Поле год не может быть пустым'
+  }
+
+  if (year.value && year.value.toString().length < 4) {
+    error.value = 'Введите полный год'
+  }
+
+  if (month.value > 12) {
+    error.value = 'Вы ввели некорректное значение месяца'
+  }
 }
 </script>
