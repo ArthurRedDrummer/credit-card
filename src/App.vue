@@ -31,10 +31,7 @@ const number = reactive({
 });
 
 const expires = reactive({
-  value: {
-    month: '',
-    year: ''
-  },
+  value: '',
   name: 'card-expires',
   title: 'Срок действия карты',
   error: ''
@@ -56,7 +53,11 @@ const canSend = computed(() => {
     return false;
   }
 
-  if (expires.error) {
+  if (expires.error || !expires.value) {
+    return false;
+  }
+
+  if (cvv.error || !cvv.value) {
     return false;
   }
 

@@ -14,7 +14,7 @@
 <script setup>
 import { ref, computed } from 'vue'
 
-const [cvv] = defineModel('number');
+const [cvv] = defineModel('cvv');
 const [error] = defineModel('error');
 const props = defineProps({
   name: {

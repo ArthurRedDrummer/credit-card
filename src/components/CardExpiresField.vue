@@ -3,7 +3,7 @@
     <div class="flex flex-row gap-5 justify-between items-center relative">
       <label class="text-sm text-gray-500 whitespace-nowrap cursor-pointer" :for="name" v-text="title" />
       <div class="flex flex-row font-mono gap-1">
-        <input ref="monthInput" class="w-7 border-b border-b-gray-200 outline-none text-center" type="number"
+        <input ref="monthInput" class="w-7 border-b border-b-gray-200 outline-none text-center" :id="name" type="number"
           v-model="month" @input="update">
         <span class="text-gray-200">/</span>
         <input ref="yearInput" class="w-12 border-b border-b-gray-200 outline-none text-center" type="number"
@@ -19,7 +19,7 @@
 <script setup>
 import { ref, computed } from 'vue'
 
-const [date] = defineModel('number');
+const [date] = defineModel('date');
 const [error] = defineModel('error');
 const props = defineProps({
   name: {
@@ -39,15 +39,11 @@ const monthInput = ref(null);
 const yearInput = ref(null);
 
 function update() {
-  date.value = {
-    month: month.value,
-    year: year.value
-  }
-
   if (month.value && month.value <= 12 && month.value.toString().length === 2) {
-    monthInput.value.blur();
     yearInput.value.focus();
   }
+
+  date.value = `${month.value}/${year.value}`;
 
   validate();
 }
