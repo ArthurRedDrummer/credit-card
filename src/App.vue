@@ -30,11 +30,11 @@ const card = reactive({
     name: 'card-number',
     value: ''
   },
-  // date: {
-  //   title: 'Date',
-  //   name: 'card-date',
-  //   value: ''
-  // },
+  date: {
+    title: 'Date',
+    name: 'card-date',
+    value: ''
+  },
   // cvv: {
   //   title: 'CVC/CVV',
   //   name: 'card-cvv',

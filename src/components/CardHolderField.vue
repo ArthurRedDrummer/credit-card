@@ -29,7 +29,7 @@ function validate() {
   }
 
   if (/[^a-zA-Z\s]+/.test(props.field.value)) {
-    error.value = 'Field should contain only letters';
+    error.value = 'Field should contain only english letters and spaces';
     return false;
   }
   
