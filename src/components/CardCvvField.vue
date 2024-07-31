@@ -1,10 +1,9 @@
 <template>
   <div class="flex flex-col gap-2 w-full">
     <div class="flex flex-row gap-5 justify-between items-center relative">
-      <label class="text-sm text-gray-500 whitespace-nowrap" :for="field.name" v-text="field.title" />
-      <!-- <span class="basis-full border-b border-b-gray-200" v-text="value" /> -->
-      <input class="outline-none basis-full border-b border-b-gray-200" autocomplete="off" :id="field.name" type="password"
-        v-model="field.value" @keyup="validate" maxlength="3" />
+      <label class="text-sm text-gray-500 whitespace-nowrap cursor-pointer" :for="name" v-text="title" />
+      <input class="outline-none basis-8 w-8 text-center shrink-0 border-b border-b-gray-200" autocomplete="off" :id="name"
+        type="password" v-model="cvv" @input="validate" @blur="validate" />
     </div>
     <div>
       <span class="text-xs text-red-600" v-if="error" v-text="error" />
@@ -13,26 +12,26 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 
-const emit = defineEmits(['change']);
-
+const [cvv] = defineModel('number');
+const [error] = defineModel('error');
 const props = defineProps({
-  field: Object
-})
-
-const error = ref('');
+  name: {
+    type: String,
+    required: true
+  },
+  title: {
+    type: String,
+    required: true
+  }
+});
 
 function validate() {
   error.value = '';
 
-  if (!props.field.value) {
-    error.value = 'Field is required';
+  if (!number.value) {
+    error.value = 'Поле не может быть пустым';
   }
-
-  emit('change', {
-    name: props.field.name,
-    error: error.value
-  });;
 }
 </script>

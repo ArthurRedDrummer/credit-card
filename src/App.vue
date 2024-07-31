@@ -3,6 +3,7 @@
     <card-holder-field v-model:user="holder.value" v-model:error="holder.error" :name="holder.name" :title="holder.title"/>
     <card-number-field v-model:number="number.value" v-model:error="number.error" :name="number.name" :title="number.title"/>
     <card-expires-field v-model:date="expires.value" v-model:error="expires.error" :name="expires.name" :title="expires.title"/>
+    <card-cvv-field v-model:cvv="cvv.value" v-model:error="cvv.error" :name="cvv.name" :title="cvv.title"/>
     <input class="block px-5 py-2 rounded-md cursor-pointer" :class="canSend ? 'bg-red-800 text-white' : 'bg-gray-500 text-white'" :disabled="!canSend" type="submit">
   </form>
 </template>
@@ -39,12 +40,23 @@ const expires = reactive({
   error: ''
 });
 
+const cvv = reactive({
+  value: '',
+  name: 'card-cvv',
+  title: 'CVC/CVV',
+  error: ''
+});
+
 const canSend = computed(() => {
   if (holder.error || !holder.value) {
     return false;
   }
 
   if (number.error || !number.value) {
+    return false;
+  }
+
+  if (expires.error) {
     return false;
   }
 
