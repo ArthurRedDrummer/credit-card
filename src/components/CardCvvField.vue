@@ -30,7 +30,7 @@ const props = defineProps({
 function validate() {
   error.value = '';
 
-  if (!number.value) {
+  if (!cvv.value) {
     error.value = 'Поле не может быть пустым';
   }
 }
